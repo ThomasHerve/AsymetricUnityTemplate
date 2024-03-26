@@ -20,5 +20,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Connect to dockerhub
+      run: docker login -u ${{secrets.DOCKER_LOGIN}} -p ${{secrets.DOCKER_PASSWORD}}
     - name: Build the Docker image
-      run: docker build . --file core/Dockerfile -t asymetric-unity-core
+      run: docker build . --file core/Dockerfile -t ${{secrets.DOCKER_LOGIN}}/asymetric-unity-core --output type=registry
