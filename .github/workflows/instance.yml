@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - core/**
+      - instance/**
 
 jobs:
 
@@ -17,4 +17,4 @@ jobs:
     - name: Connect to dockerhub
       run: docker login -u ${{secrets.DOCKER_LOGIN}} -p ${{secrets.DOCKER_PASSWORD}}
     - name: Build the Docker image
-      run: docker build . --file core/Dockerfile -t ${{secrets.DOCKER_LOGIN}}/asymetric-unity-core --output type=registry
+      run: docker build . --file core/Dockerfile -t ${{secrets.DOCKER_LOGIN}}/asymetric-unity-instance --output type=registry
