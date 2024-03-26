@@ -2,7 +2,7 @@ FROM python:alpine
 
 EXPOSE 8000
 
-COPY requirements.txt requirements.txt
+COPY ./core/requirements.txt requirements.txt
 RUN pip3 install gunicorn
 RUN pip3 install -r requirements.txt
 WORKDIR /src
