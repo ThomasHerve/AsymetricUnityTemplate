@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm.fullname" . }}
+  name: core
   labels:
-    {{- include "helm.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: asyncunitytemplate
+    app.kubernetes.io/name: core
   annotations:
     keel.sh/policy: force
     keel.sh/trigger: poll      
