@@ -1,1 +1,1 @@
-L'objectif du module "instance" et de créer un lien entre le jeu tournant sur unity et les clients web, le tout via des websockets.
+L'objectif du module "instance" et de créer un lien entre le jeu tournant sur unity et les clients web, le tout via des interfaces REST.
