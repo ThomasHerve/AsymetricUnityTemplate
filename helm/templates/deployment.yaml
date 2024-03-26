@@ -4,6 +4,10 @@ metadata:
   name: {{ include "helm.fullname" . }}
   labels:
     {{- include "helm.labels" . | nindent 4 }}
+  annotations:
+    keel.sh/policy: force
+    keel.sh/trigger: poll      
+    keel.sh/pollSchedule: "@every 10m"
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -22,7 +26,7 @@ spec:
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      - name: {{ .Values.imagePullSecrets.name }}
       {{- end }}
       serviceAccountName: {{ include "helm.serviceAccountName" . }}
       securityContext:
@@ -39,11 +43,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /test?string=test&number=5263
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /test?string=test&number=5263
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

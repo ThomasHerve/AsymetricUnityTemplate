@@ -3,14 +3,18 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+namespace: asyncunity
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  repository: thomasherve/asymetric-unity-core
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
-imagePullSecrets: []
+imagePullSecrets:
+  name: thomashervecredentials
+  dockerconfigjson: ""
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -41,20 +45,20 @@ service:
   port: 80
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
   hosts:
-    - host: chart-example.local
+    - host: asyncunitycore.multiplayertournamentonline.fr
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls: 
+    - secretName: ingress-cert
+      hosts:
+        - multiplayertournamentonline.fr
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
