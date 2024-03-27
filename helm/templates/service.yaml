@@ -14,18 +14,3 @@ spec:
   selector:
     app.kubernetes.io/instance: asyncunitytemplate
     app.kubernetes.io/name: core
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: instance
-  labels:
-    app: instance
-spec:
-  ports:
-    - port: 80
-      name: http
-  type: ClusterIP
-  selector:
-    app.kubernetes.io/instance: asyncunitytemplate
-    app.kubernetes.io/name: instance
