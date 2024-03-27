@@ -8,8 +8,13 @@ namespace: asyncunity
 image:
   repository: thomasherve/asymetric-unity-core
   pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
+
+instance:
+  repository: thomasherve/asymetric-unity-instance
+  pullPolicy: Always
+  tag: "latest"
+  replicas: 0
 
 imagePullSecrets:
   name: thomashervecredentials
