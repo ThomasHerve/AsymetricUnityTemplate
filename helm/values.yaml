@@ -10,6 +10,10 @@ image:
   pullPolicy: Always
   tag: "latest"
 
+instance:
+  repository: thomasherve/asymetric-unity-instance
+  tag: "latest"
+
 imagePullSecrets:
   name: thomashervecredentials
   dockerconfigjson: ""

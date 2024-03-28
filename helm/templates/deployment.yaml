@@ -34,6 +34,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: INSTANCE_IMAGE
+            value: "{{ .Values.instance.repository }}:{{ .Values.instance.tag }}"
+          - name: KUBERNETES_NAMESPACE
+            value: "{{ .Values.namespace }}"
           ports:
             - name: http
               containerPort: 8000
