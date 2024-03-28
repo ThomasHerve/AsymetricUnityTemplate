@@ -22,8 +22,8 @@ def create_room():
 
     pod_body = client.V1Pod(api_version='v1', kind='Pod', metadata=pod_metadata, spec=pod_spec)
         
-    v1.create_namespaced_pod(namespace='default', body=pod_body)
-
+    v1.create_namespaced_pod(namespace=namespace , body=pod_body)
+    return pod_id
 
 @hug.post('/delete-room')
 def delete_room(body):
