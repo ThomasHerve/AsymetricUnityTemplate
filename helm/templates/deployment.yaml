@@ -8,7 +8,7 @@ metadata:
   annotations:
     keel.sh/policy: force
     keel.sh/trigger: poll      
-    keel.sh/pollSchedule: "@every 10m"
+    keel.sh/pollSchedule: "@every 1m"
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -46,8 +46,16 @@ spec:
             httpGet:
               path: /test?string=test&number=5263
               port: http
+          volumeMounts:
+          - name: newsecret
+            mountPath: "/src"
+            readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: kubernetes-token
+        secret:
+          secretName: kubernetes-token
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
