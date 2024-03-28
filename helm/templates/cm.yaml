@@ -8,8 +8,8 @@ data:
     apiVersion: v1
     clusters:
     - cluster:
-        certificate-authority-data: {{ .Values.secret.certificate-authority-data }}
-        server: https://{{ .Values.secret.kube-address }}:6443
+        certificate-authority-data: {{ .Values.secret.certificateauthoritydata }}
+        server: https://{{ .Values.secret.kubeaddress }}:6443
       name: kubernetes
     contexts:
     - context:
@@ -23,6 +23,6 @@ data:
     users:
     - name: kubernetes-admin
       user:
-        client-certificate-data: {{ .Values.secret.client-certificate-data }}
-        client-key-data: {{ .Values.secret.client-key-data }}
+        client-certificate-data: {{ .Values.secret.clientcertificatedata }}
+        client-key-data: {{ .Values.secret.clientkeydata }}
 

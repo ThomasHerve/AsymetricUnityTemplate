@@ -85,7 +85,7 @@ tolerations: []
 affinity: {}
 
 secrets:
-  certificate-authority-data:
-  client-certificate-data:
-  client-key-data:
-  kube-address: 149.202.55.61
+  certificateauthoritydata:
+  clientcertificatedata:
+  clientkeydata:
+  kubeaddress: 149.202.55.61
