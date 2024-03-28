@@ -47,7 +47,7 @@ spec:
               path: /test?string=test&number=5263
               port: http
           volumeMounts:
-          - name: newsecret
+          - name: kubernetes-token
             mountPath: "/src"
             readOnly: true
           resources:
