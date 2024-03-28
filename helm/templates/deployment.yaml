@@ -46,16 +46,12 @@ spec:
             httpGet:
               path: /test?string=test&number=5263
               port: http
-          volumeMounts:
-          - name: kubernetes-token
-            mountPath: "/src/kubernetes-token"
-            readOnly: true
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      volumes:
-      - name: kubernetes-token
-        secret:
-          secretName: kubernetes-token
+          env: 
+          - name: KUBERNETES_TOKEN 
+            valueFrom: 
+              secretKeyRef: 
+                name: kubernetes-token 
+                key: token 
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
