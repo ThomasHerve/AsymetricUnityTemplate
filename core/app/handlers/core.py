@@ -1,10 +1,8 @@
-import hug
+import hug, base64, os
 
 @hug.post('/create-room')
 def create_room():
-    token = ""
-    with open("kubernetes-token/token", "r") as f:
-        token = f.read()
+    token = base64.b64decode(os.environ["KUBERNETES_TOKEN"])
     return token
 
 @hug.post('/delete-room')
