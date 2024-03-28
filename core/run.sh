@@ -1,3 +1,3 @@
 #!/bin/sh
 
-hug -f app/main.py
+hug -f app/__init__.py
