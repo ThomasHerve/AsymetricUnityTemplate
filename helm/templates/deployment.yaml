@@ -46,12 +46,21 @@ spec:
             httpGet:
               path: /test?string=test&number=5263
               port: http
-          env:
-          - name: KUBERNETES_TOKEN 
-            valueFrom: 
-              secretKeyRef: 
-                name: kubernetes-token 
-                key: token 
+          volumeMounts:
+          - name: kubernetes-config
+            mountPath: "/src/kubernetes-config"
+            subPath: config
+            readOnly: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: kubernetes-config
+        configMap:
+        # Provide the name of the ConfigMap you want to mount.
+          name: kubernetes-config
+          items:
+          - key: config
+            path: config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

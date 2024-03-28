@@ -1,1 +1,2 @@
 hug == 2.6.1
+kubernetes == 29.0.0

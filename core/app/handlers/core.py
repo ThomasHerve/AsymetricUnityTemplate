@@ -1,9 +1,8 @@
-import hug, base64, os
+import hug
 
 @hug.post('/create-room')
 def create_room():
-    token = base64.b64decode(os.environ["KUBERNETES_TOKEN"])
-    return token
+    return ""
 
 @hug.post('/delete-room')
 def delete_room(body):

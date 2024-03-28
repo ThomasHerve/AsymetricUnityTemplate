@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubernetes-config
+  namespace: {{ .Values.namespace }}
+data:
+  config: |-
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority-data: {{ .Values.secret.certificate-authority-data }}
+        server: https://{{ .Values.secret.kube-address }}:6443
+      name: kubernetes
+    contexts:
+    - context:
+        cluster: kubernetes
+        namespace: asyncunity
+        user: kubernetes-admin
+      name: kubernetes-admin@kubernetes
+    current-context: kubernetes-admin@kubernetes
+    kind: Config
+    preferences: {}
+    users:
+    - name: kubernetes-admin
+      user:
+        client-certificate-data: {{ .Values.secret.client-certificate-data }}
+        client-key-data: {{ .Values.secret.client-key-data }}
+
