@@ -34,7 +34,7 @@ def delete_room(body):
     v1 = client.CoreV1Api()
 
     pods_list = v1.list_namespaced_pod(namespace=namespace)
-    pods = [item.metadata.name for item in pod_list.items]
+    pods = [item.metadata.name for item in pods_list.items]
     if not f"instance-{body["instance"]}" in pods_list:
         return "Instance " + body["instance"] + " does not exist"
 
