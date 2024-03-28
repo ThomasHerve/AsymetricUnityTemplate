@@ -35,7 +35,7 @@ def delete_room(body):
 
     pods_list = v1.list_namespaced_pod(namespace=namespace)
     pods = [item.metadata.name for item in pods_list.items]
-    if not f"instance-{body["instance"]}" in pods_list:
+    if not f"instance-{body["instance"]}" in pods:
         return "Instance " + body["instance"] + " does not exist"
 
     v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
