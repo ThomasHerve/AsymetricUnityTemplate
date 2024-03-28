@@ -27,4 +27,17 @@ def create_room():
 
 @hug.post('/delete-room')
 def delete_room(body):
-    return ""
+
+    namespace = os.environ["KUBERNETES_NAMESPACE"]
+    
+    config.load_kube_config(config_file='./kubernetes-config')
+    v1 = client.CoreV1Api()
+
+    pods_list = v1.list_namespaced_pod(namespace=namespace)
+    pods = [item.metadata.name for item in pod_list.items]
+    if not f"instance-{body["instance"]}" in pods_list:
+        return "Instance " + body["instance"] + " does not exist"
+
+    v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
+
+    return "Ok"
