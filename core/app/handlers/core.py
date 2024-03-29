@@ -13,16 +13,27 @@ def create_room():
     config.load_kube_config(config_file='./kubernetes-config')
     v1 = client.CoreV1Api()
 	
+    # Create a pod
     containers = []
     container1 = client.V1Container(name='instance', image=image)
     containers.append(container1)
 
-    pod_spec = client.V1PodSpec(containers=containers)
+    pod_spec = client.V1PodSpec(containers=containers) # TODO SELECTOR
     pod_metadata = client.V1ObjectMeta(name='instance-' + pod_id, namespace=namespace)
 
     pod_body = client.V1Pod(api_version='v1', kind='Pod', metadata=pod_metadata, spec=pod_spec)
         
     v1.create_namespaced_pod(namespace=namespace , body=pod_body)
+
+    # Create a service
+    service_port_list = [client.V1ServicePort(port=8000, target_port=80, name='instance-' + pod_id)]
+    service_spec = client.V1ServiceSpec(ports=service_port_list, selector={
+        "pod_id": pod_id
+    })
+    service_metadata = client.V1ObjectMeta(name='instance-' + pod_id, namespace=namespace)
+    service = kubernetes.client.V1Service()
+
+
     return pod_id
 
 @hug.post('/delete-room')
