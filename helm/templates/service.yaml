@@ -14,3 +14,20 @@ spec:
   selector:
     app.kubernetes.io/instance: asyncunitytemplate
     app.kubernetes.io/name: core
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.frontend.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: asyncunitytemplate
+    app.kubernetes.io/name: frontend

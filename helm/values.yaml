@@ -12,7 +12,14 @@ image:
 
 instance:
   repository: thomasherve/asymetric-unity-instance
+  pullPolicy: Always
   tag: "latest"
+
+frontend:
+  repository: thomasherve/asymetric-unity-frontend
+  pullPolicy: Always
+  tag: "latest"
+  port: 80
 
 imagePullSecrets:
   name: thomashervecredentials
