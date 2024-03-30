@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AsymetricUnityTemplateComponent } from './asymetric-unity-template/asymetric-unity-template.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AsymetricUnityTemplateComponent
   ],
   imports: [
     BrowserModule,
