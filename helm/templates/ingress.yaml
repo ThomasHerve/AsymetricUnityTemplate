@@ -1,3 +1,4 @@
+{{- $dot := . }}
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "helm.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
@@ -41,21 +42,19 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-          {{- range .paths }}
           - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
             pathType: {{ .pathType }}
-            {{- end }}
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: core
                 port:
                   number: {{ $svcPort }}
-              {{- else }}
-              serviceName: core
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          {{- end }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: {{ $dot.Values.frontend.port }}
     {{- end }}
 {{- end }}
