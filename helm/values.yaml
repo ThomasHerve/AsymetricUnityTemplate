@@ -66,9 +66,13 @@ ingress:
     - host: asyncunitycore.multiplayertournamentonline.fr
       path:  /()(.*)
       pathType: Prefix
+      name: core
+      port: 8000
     - host: asyncunityfrontend.multiplayertournamentonline.fr
       path:  /()(.*)
       pathType: Prefix
+      name: frontend
+      port: 80
   tls: 
     - secretName: ingress-cert
       hosts:
