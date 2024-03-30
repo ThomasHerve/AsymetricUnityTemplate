@@ -37,16 +37,16 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.ingress.host | quote }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          {{- range .Values.ingress.paths }}
           - path: {{ .path }}
             pathType: {{ .pathType }}
-            backend: 
+            backend:
               service:
-                name: {{ .name }}
+                name: core
                 port:
-                  number: {{ .port }}
-          {{- end }}
+                  number: {{ $svcPort }}
+    {{- end }}
 {{- end }}
