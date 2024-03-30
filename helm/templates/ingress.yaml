@@ -15,7 +15,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: core
+  name: {{ .Values.ingress.name }}
   labels:
     {{- include "helm.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}

@@ -39,6 +39,10 @@ spec:
             value: "{{ .Values.instance.repository }}:{{ .Values.instance.tag }}"
           - name: KUBERNETES_NAMESPACE
             value: "{{ .Values.namespace }}"
+          - name: KUBERNETES_INGRESS_NAME
+            value: "{{ .Values.ingress.name }}"
+          - name: KUBERNETES_PORT
+            value: "{{ .Values.service.port }}"
           ports:
             - name: http
               containerPort: 8000

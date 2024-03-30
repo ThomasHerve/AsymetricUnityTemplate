@@ -48,16 +48,18 @@ service:
   port: 8000
 
 ingress:
+  name: core
   enabled: true
   className: nginx
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
   hosts:
     - host: asyncunitycore.multiplayertournamentonline.fr
       paths:
-        - path: /
-          pathType: ImplementationSpecific
+        - path:  /()(.*)
+          pathType: Prefix
   tls: 
     - secretName: ingress-cert
       hosts:
