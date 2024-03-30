@@ -28,7 +28,7 @@ def create_room():
     v1.create_namespaced_pod(namespace=namespace , body=pod_body)
 
     # Create a service
-    service_port_list = [client.V1ServicePort(port=8000, target_port=80, name='instance-' + pod_id)]
+    service_port_list = [client.V1ServicePort(port=8000, target_port=8000, name='http')]
     service_spec = client.V1ServiceSpec(ports=service_port_list, selector={
         "pod_id": pod_id
     })
