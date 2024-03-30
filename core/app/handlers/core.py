@@ -53,5 +53,6 @@ def delete_room(body):
         return "Instance " + body["instance"] + " does not exist"
 
     v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
+    v1.delete_namespaced_service(namespace=namespace, name='instance-'+body["instance"])
 
     return "Ok"
