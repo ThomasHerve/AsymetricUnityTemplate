@@ -53,7 +53,7 @@ def create_room():
 
 @hug.post('/delete-room')
 def delete_room(body):
-
+    ingress = os.environ["KUBERNETES_INGRESS_NAME"]
     namespace = os.environ["KUBERNETES_NAMESPACE"]
     
     config.load_kube_config(config_file='./kubernetes-config')
@@ -66,5 +66,14 @@ def delete_room(body):
 
     v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
     v1.delete_namespaced_service(namespace=namespace, name='instance-'+body["instance"])
+
+    # Remove ingress entry
+    networking = client.NetworkingV1Api()
+    current_ingress = networking.read_namespaced_ingress(name=ingress, namespace=namespace)
+    current_ingress_paths = current_ingress.spec.rules[0].http.paths
+    current_ingress_paths = filter(lambda x: x.backend.name != f"instance-{body["instance"]}", current_ingress_paths)
+    current_ingress.spec.rules[0].http.paths = current_ingress_paths
+
+    networking.patch_namespaced_ingress(ingress, namespace, current_ingress)
 
     return "Ok"
