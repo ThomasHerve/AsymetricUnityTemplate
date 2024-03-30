@@ -62,11 +62,16 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/ssl-redirect: 'false'
     nginx.ingress.kubernetes.io/use-regex: 'true'
-  hosts:
-    - host: asyncunitycore.multiplayertournamentonline.fr
-      paths:
-        - path:  /()(.*)
-          pathType: Prefix
+  host: asyncunitycore.multiplayertournamentonline.fr
+  paths:
+    - path:  /()(.*)
+      pathType: Prefix
+      name: core
+      port: 8000
+    - path:  /frontend(/|$)(.*)
+      pathType: Prefix
+      name: frontend
+      port: 80
   tls: 
     - secretName: ingress-cert
       hosts:
