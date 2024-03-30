@@ -64,13 +64,11 @@ ingress:
     nginx.ingress.kubernetes.io/use-regex: 'true'
   hosts:
     - host: asyncunitycore.multiplayertournamentonline.fr
-      paths:
-        - path:  /()(.*)
-          pathType: Prefix
+      path:  /()(.*)
+      pathType: Prefix
     - host: asyncunityfrontend.multiplayertournamentonline.fr
-      paths:
-        - path:  /()(.*)
-          pathType: Prefix
+      path:  /()(.*)
+      pathType: Prefix
   tls: 
     - secretName: ingress-cert
       hosts:
