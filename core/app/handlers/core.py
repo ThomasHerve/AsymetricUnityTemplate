@@ -44,8 +44,8 @@ def create_room():
 
     current_ingress = networking.read_namespaced_ingress(name=ingress, namespace=namespace)
     current_ingress_paths = current_ingress.spec.rules[0].http.paths
-    ingress_paths = current_ingress_paths.append(client.V1HTTPIngressPath(path=f"/{pod_id}(/|$)(.*)", path_type="Prefix", backend=client.V1IngressBackend(service=client.V1IngressServiceBackend(name=f"instance-{pod_id}", port=client.V1ServiceBackendPort(number=port)))))
-    current_ingress.spec.rules[0].http.paths = ingress_paths
+    current_ingress_paths.append(client.V1HTTPIngressPath(path=f"/{pod_id}(/|$)(.*)", path_type="Prefix", backend=client.V1IngressBackend(service=client.V1IngressServiceBackend(name=f"instance-{pod_id}", port=client.V1ServiceBackendPort(number=port)))))
+    current_ingress.spec.rules[0].http.paths = current_ingress_paths
 
     networking.patch_namespaced_ingress(ingress, namespace, current_ingress)
 
