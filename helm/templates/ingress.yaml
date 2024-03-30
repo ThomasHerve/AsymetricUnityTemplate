@@ -38,9 +38,9 @@ spec:
   {{- end }}
   rules:
     - host: {{ .Values.ingress.host | quote }}
-      {{- range .Values.ingress.paths }}
       http:
         paths:
+          {{- range .Values.ingress.paths }}
           - path: {{ .path }}
             pathType: {{ .pathType }}
             backend: 
@@ -48,5 +48,5 @@ spec:
                 name: {{ .name }}
                 port:
                   number: {{ .port }}
-      {{- end }}
+          {{- end }}
 {{- end }}
