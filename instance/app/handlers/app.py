@@ -13,4 +13,4 @@ def pull():
 def publish(body):
     global messages
     messages.append(body["message"])
-    return f"Published : {body["message"]}"
+    return f"Message published : {body["message"]}"
