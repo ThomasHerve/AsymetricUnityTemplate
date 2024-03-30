@@ -7,7 +7,7 @@ def create_room():
     image = os.environ["INSTANCE_IMAGE"]
     namespace = os.environ["KUBERNETES_NAMESPACE"]
     ingress = os.environ["KUBERNETES_INGRESS_NAME"]
-    port = os.environ["KUBERNETES_PORT"]
+    port = int(os.environ["KUBERNETES_PORT"])
 
     # Random pod id
     pod_id = ''.join(random.choice(string.ascii_lowercase) for i in range(10)) 
