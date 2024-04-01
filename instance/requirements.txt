@@ -1,2 +1,2 @@
-hug == 2.6.1
+hug == 2.4.8
 hug-middleware-cors == 1.0.0

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UrlService {
 
-  url:string = "https://asyncunityfrontend.multiplayertournamentonline.fr/"
+  url:string = "https://asyncunitycore.multiplayertournamentonline.fr/"
   constructor(private http: HttpClient) { }
 
   public publish(id: string |undefined, value: string|undefined) {
