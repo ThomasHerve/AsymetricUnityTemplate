@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AsymetricUnityTemplateComponent implements OnInit {
 
+  url: string | undefined
   variable: string | undefined;
 
   constructor(private route: ActivatedRoute) {
@@ -17,5 +18,6 @@ export class AsymetricUnityTemplateComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.variable = params['variable'];
     });
+    this.url = process.env.BACKEND_URL;
   }
 }

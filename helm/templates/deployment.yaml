@@ -119,6 +119,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.frontend.repository }}:{{ .Values.frontend.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.frontend.pullPolicy }}
+          env:
+          - name: BACKEND_URL
+            {{- with (index .Values.ingress.hosts 0) }}
+            value: {{ .host }}
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.frontend.port }}
