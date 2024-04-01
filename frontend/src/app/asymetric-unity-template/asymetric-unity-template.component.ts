@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UrlService } from '../url.service';
 
 @Component({
   selector: 'app-asymetric-unity-template',
@@ -8,16 +9,24 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AsymetricUnityTemplateComponent implements OnInit {
 
-  url: string | undefined
+  value: string | undefined;
   variable: string | undefined;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private urlService: UrlService) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.variable = params['variable'];
     });
-    this.url = process.env.BACKEND_URL;
+  }
+
+  onInputChange(event: Event) {
+    // Accéder à la valeur du champ de texte à partir de l'événement
+    this.value = (event.target as HTMLInputElement).value;
+  }
+
+  click() {
+    this.urlService.publish(this.variable, this.value).subscribe((x)=>console.log)
   }
 }
