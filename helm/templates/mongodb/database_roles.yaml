@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.mongodb.database.name }}
+  namespace: {{ if .Values.mongodb.database.namespace }} {{ .Values.mongodb.database.namespace }} {{ else }} {{ .Release.Namespace }} {{ end }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Values.mongodb.database.name }}
+  namespace: {{ if .Values.mongodb.database.namespace }} {{ .Values.mongodb.database.namespace }} {{ else }} {{ .Release.Namespace }} {{ end }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - patch
+      - delete
+      - get
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Values.mongodb.database.name }}
+  namespace: {{ if .Values.mongodb.database.namespace }} {{ .Values.mongodb.database.namespace }} {{ else }} {{ .Release.Namespace }} {{ end }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.mongodb.database.name }}
+roleRef:
+  kind: Role
+  name: {{ .Values.mongodb.database.name }}
+  apiGroup: rbac.authorization.k8s.io

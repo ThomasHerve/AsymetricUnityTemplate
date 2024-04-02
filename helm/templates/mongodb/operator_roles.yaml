@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.mongodb.operator.name }}
+  namespace: {{ .Release.Namespace }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{ if eq (.Values.mongodb.operator.watchNamespace | default "") "*" }} ClusterRole {{ else }} Role {{ end }}
+metadata:
+  name: {{ .Values.mongodb.operator.name }}
+  {{- if not (eq (.Values.mongodb.operator.watchNamespace | default "*") "*") }}
+  namespace: {{ .Values.mongodb.operator.watchNamespace }}
+  {{- else }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - configmaps
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mongodbcommunity.mongodb.com
+  resources:
+  - mongodbcommunity
+  - mongodbcommunity/status
+  - mongodbcommunity/spec
+  - mongodbcommunity/finalizers
+  verbs:
+  - get
+  - patch
+  - list
+  - update
+  - watch
+
+---
+kind: {{ if eq (.Values.mongodb.operator.watchNamespace | default "") "*" }} ClusterRoleBinding {{ else }} RoleBinding {{ end }}
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Values.mongodb.operator.name }}
+  {{- if ne (.Values.mongodb.operator.watchNamespace | default "*") "*" }}
+  namespace: {{ .Values.mongodb.operator.watchNamespace }}
+  {{- else }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.mongodb.operator.name }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: {{ if eq (.Values.mongodb.operator.watchNamespace | default "") "*" }} ClusterRole {{ else }} Role {{ end }}
+  name: {{ .Values.mongodb.operator.name }}
+  apiGroup: rbac.authorization.k8s.io
