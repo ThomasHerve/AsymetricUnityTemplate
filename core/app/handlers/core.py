@@ -61,7 +61,7 @@ def delete_room(body):
 
     pods_list = v1.list_namespaced_pod(namespace=namespace)
     pods = [item.metadata.name for item in pods_list.items]
-    if not f"instance-{body["instance"]}" in pods:
+    if not f"instance-{body['instance']}" in pods:
         return "Instance " + body["instance"] + " does not exist"
 
     v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
@@ -71,7 +71,7 @@ def delete_room(body):
     networking = client.NetworkingV1Api()
     current_ingress = networking.read_namespaced_ingress(name=ingress, namespace=namespace)
     current_ingress_paths = current_ingress.spec.rules[0].http.paths
-    current_ingress_paths = list(filter(lambda x: x.backend.service.name != f"instance-{body["instance"]}", current_ingress_paths))
+    current_ingress_paths = list(filter(lambda x: x.backend.service.name != f"instance-{body['instance']}", current_ingress_paths))
     current_ingress.spec.rules[0].http.paths = current_ingress_paths
 
     networking.patch_namespaced_ingress(ingress, namespace, current_ingress)
