@@ -17,7 +17,7 @@ def create_room():
 	
     # Create a pod
     containers = []
-    container1 = client.V1Container(name='instance', image=image)
+    container1 = client.V1Container(name='instance', image=image, env=[client.V1EnvVar(name="INSTANCE_NAME", value=pod_id), client.V1EnvVar(name="BACKEND_URL", value=os.environ["BACKEND_URL"])])
     containers.append(container1)
 
     pod_spec = client.V1PodSpec(containers=containers)

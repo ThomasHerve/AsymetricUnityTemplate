@@ -43,6 +43,10 @@ spec:
             value: "{{ .Values.ingress.name }}"
           - name: KUBERNETES_PORT
             value: "{{ .Values.service.port }}"
+          - name: BACKEND_URL
+            {{- with (index .Values.ingress.hosts 0) }}
+            value: {{ .host }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8000
