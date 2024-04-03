@@ -47,6 +47,8 @@ spec:
             {{- with (index .Values.ingress.hosts 0) }}
             value: {{ .host }}
             {{- end }}
+          - name: PASSWORD
+            value: {{ .Values.image.password }}
           ports:
             - name: http
               containerPort: 8000

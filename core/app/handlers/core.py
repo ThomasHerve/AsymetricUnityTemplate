@@ -17,7 +17,7 @@ def create_room():
 	
     # Create a pod
     containers = []
-    container1 = client.V1Container(name='instance', image=image, env=[client.V1EnvVar(name="INSTANCE_NAME", value=pod_id), client.V1EnvVar(name="BACKEND_URL", value=os.environ["BACKEND_URL"])])
+    container1 = client.V1Container(name='instance', image=image, env=[client.V1EnvVar(name="INSTANCE_NAME", value=pod_id), client.V1EnvVar(name="BACKEND_URL", value=os.environ["BACKEND_URL"]), client.V1EnvVar(name="PASSWORD", value=os.environ["PASSWORD"])])
     containers.append(container1)
 
     pod_spec = client.V1PodSpec(containers=containers)
@@ -63,6 +63,9 @@ def delete_room(body):
     pods = [item.metadata.name for item in pods_list.items]
     if not f"instance-{body['instance']}" in pods:
         return "Instance " + body["instance"] + " does not exist"
+
+    if body["password"] != os.environ["PASSWORD"]:
+        return "Wrong password"
 
     v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
     v1.delete_namespaced_service(namespace=namespace, name='instance-'+body["instance"])

@@ -7,6 +7,7 @@ namespace: asyncunity
 
 image:
   repository: thomasherve/asymetric-unity-core
+  password:
   pullPolicy: Always
   tag: "latest"
 
