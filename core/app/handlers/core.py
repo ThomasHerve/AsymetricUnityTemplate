@@ -64,7 +64,7 @@ def delete_room(body):
     if not f"instance-{body['instance']}" in pods:
         return "Instance " + body["instance"] + " does not exist"
 
-    if body["password"] != os.environ["PASSWORD"]:
+    if "password" not in body or body["password"] != os.environ["PASSWORD"]:
         return "Wrong password"
 
     v1.delete_namespaced_pod(namespace=namespace, name='instance-'+body["instance"])
