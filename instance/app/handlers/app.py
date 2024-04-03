@@ -21,5 +21,5 @@ def publish(body):
 def stop():
     instance_name = os.environ["INSTANCE_NAME"]
     backend_url = os.environ["BACKEND_URL"]
-    requests.post(f"{backend_url}/delete-room", data={"instance": instance_name})
+    requests.post(f"https://{backend_url}/delete-room", data={"instance": instance_name})
     return "deleted"
