@@ -1,5 +1,7 @@
 import hug, os, random, string
 from kubernetes import client, config
+import qrcode
+from PIL import Image
 
 @hug.post('/create-room')
 def create_room():
@@ -49,7 +51,32 @@ def create_room():
 
     networking.patch_namespaced_ingress(ingress, namespace, current_ingress)
 
-    return pod_id
+    # QR code
+    url = value=os.environ["BACKEND_URL"] + "/" + pod_id
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+
+    # Créer une image PIL à partir du QR code
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convertir l'image PIL en tableau de 0 et de 1
+    qr_array = []
+    width, height = img.size
+    pixels = img.load()
+    for y in range(height):
+        row = []
+        for x in range(width):
+            # Si le pixel est noir (représentant le code QR), ajouter 1, sinon 0
+            row.append(1 if pixels[x, y] == 0 else 0)
+        qr_array.append(row)
+
+    return {"instance": pod_id, "qr_code": qr_array}
 
 @hug.post('/delete-room')
 def delete_room(body):
