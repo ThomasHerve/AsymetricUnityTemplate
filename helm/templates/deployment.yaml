@@ -148,3 +148,86 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: instance-fixe
+  labels:
+    app.kubernetes.io/instance: asyncunitytemplate
+    app.kubernetes.io/name: instance-fixe
+  annotations:
+    keel.sh/policy: force
+    keel.sh/trigger: poll      
+    keel.sh/pollSchedule: "@every 1m"
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: asyncunitytemplate
+      app.kubernetes.io/name: instance-fixe
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: asyncunitytemplate
+        app.kubernetes.io/name: instance-fixe
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets.name }}
+      serviceAccountName: {{ include "helm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.instance.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: INSTANCE_IMAGE
+            value: "{{ .Values.instance.repository }}:{{ .Values.instance.tag }}"
+          - name: KUBERNETES_NAMESPACE
+            value: "{{ .Values.namespace }}"
+          - name: KUBERNETES_INGRESS_NAME
+            value: "{{ .Values.ingress.name }}"
+          - name: KUBERNETES_PORT
+            value: "{{ .Values.service.port }}"
+          - name: BACKEND_URL
+            {{- with (index .Values.ingress.hosts 0) }}
+            value: {{ .host }}
+            {{- end }}
+          - name: PASSWORD
+            value: {{ .Values.image.password }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          volumeMounts:
+          - name: kubernetes-config
+            mountPath: "/src/kubernetes-config"
+            subPath: config
+            readOnly: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: kubernetes-config
+        configMap:
+        # Provide the name of the ConfigMap you want to mount.
+          name: kubernetes-config
+          items:
+          - key: config
+            path: config
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

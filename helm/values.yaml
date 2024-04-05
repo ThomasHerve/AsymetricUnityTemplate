@@ -74,6 +74,11 @@ ingress:
       pathType: Prefix
       name: frontend
       port: 80
+    - host: sgj2024.multiplayertournamentonline.fr
+      path:  /()(.*)
+      pathType: Prefix
+      name: instance-fixe
+      port: 8000
   tls: 
     - secretName: ingress-cert
       hosts:
