@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UrlService } from '../url.service';
 import { interval } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asymetric-unity-template',

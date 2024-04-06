@@ -5,6 +5,7 @@
 </div>
 -->
 <div class="button-container">
+<div *ngIf="currentCooldown < cooldown" class="timer">{{(5 - currentCooldown).toFixed(1)}}</div>
 <div class="button" id="0" (click)="click('0')">💡</div>
 <div class="button" id="1" (click)="click('1')">🫀</div>
 <div class="button" id="2" (click)="click('2')">👻</div>
