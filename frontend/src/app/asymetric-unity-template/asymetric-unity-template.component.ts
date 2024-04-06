@@ -50,14 +50,18 @@ export class AsymetricUnityTemplateComponent implements OnInit {
   animation(value: string) {
     const animated = document.getElementById(value);
 
-    animated!.addEventListener("animationend", () => {
-      animated?.classList.remove('anim');
+    animated!.addEventListener("animationend", (x) => {
+      if(x.animationName == "anim") {
+        animated?.classList.remove('anim');
+      }
+      else {
+        animated?.classList.remove('loading');
+      }
     });
   }
 
   click(value: string) {
     if(this.currentCooldown == this.cooldown) {
-      console.log("TEST")
       this.currentCooldown = 0;
       document.getElementById("0")!.style.backgroundColor = "grey"
       document.getElementById("1")!.style.backgroundColor = "grey"
@@ -70,6 +74,11 @@ export class AsymetricUnityTemplateComponent implements OnInit {
       const animated = document.getElementById(value);
       animated?.classList.add('anim');
       this.urlService.publish(this.variable, value).subscribe((x)=>console.log)  
+
+      document.getElementById("0")!.classList.add('loading')
+      document.getElementById("1")!.classList.add('loading')
+      document.getElementById("2")!.classList.add('loading')
+      document.getElementById("3")!.classList.add('loading')      
     }
   }
 }
