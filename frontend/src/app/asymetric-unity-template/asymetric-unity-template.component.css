@@ -5,12 +5,12 @@
         align-items: center;
         width: 80%;
         flex-direction: column;
+        margin-left: 3vh;
     }
     
     .button {
-        width: calc(20vh - 20px); /* Largeur égale à la hauteur pour faire un bouton carré */
-        height: calc(20vh - 20px); /* Hauteur égale à la largeur pour faire un bouton carré */
-        transform: translate(3vh);
+        width: calc(15vh - 15px); /* Largeur égale à la hauteur pour faire un bouton carré */
+        height: calc(15vh - 15px); /* Hauteur égale à la largeur pour faire un bouton carré */
         background-color: #1a237e; /* Légèrement plus clair que le fond */
         border: 10px solid #3949ab; /* Bordure */
         display: flex;
@@ -21,6 +21,20 @@
         margin: 10px; /* Espacement entre les boutons */
         font-size: 8vh;
     }
+
+    .timer {
+        width: calc(15vh - 15px); /* Largeur égale à la hauteur pour faire un bouton carré */
+        height: calc(15vh - 15px); /* Hauteur égale à la largeur pour faire un bouton carré */
+        background-color: #1a237e; /* Légèrement plus clair que le fond */
+        border: 10px solid #3949ab; /* Bordure */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 10px; /* Espacement entre les boutons */
+        border-radius:50%;
+    }
 }
 
 @media screen and (min-width: 1200px) {
@@ -29,12 +43,12 @@
         justify-content: center;
         align-items: center;
         width: 80%;
+        margin-left: 10vw;
     }
     
     .button {
-        width: calc(20vw - 20px); /* Largeur égale à la hauteur pour faire un bouton carré */
-        height: calc(20vw - 20px); /* Hauteur égale à la largeur pour faire un bouton carré */
-        transform: translate(10vw, 0);
+        width: calc(15vw - 15px); /* Largeur égale à la hauteur pour faire un bouton carré */
+        height: calc(15vw - 15px); /* Hauteur égale à la largeur pour faire un bouton carré */
         background-color: #1a237e; /* Légèrement plus clair que le fond */
         border: 10px solid #3949ab; /* Bordure */
         display: flex;
@@ -45,5 +59,40 @@
         margin: 10px; /* Espacement entre les boutons */
         font-size: 8vw;
     }
+
+    .timer {
+        width: calc(15vw - 15px); /* Largeur égale à la hauteur pour faire un bouton carré */
+        height: calc(15vw - 15px); /* Hauteur égale à la largeur pour faire un bouton carré */
+        background-color: #1a237e; /* Légèrement plus clair que le fond */
+        border: 10px solid #3949ab; /* Bordure */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 10px; /* Espacement entre les boutons */
+        border-radius:50%;
+    }
 }
+
+.button:hover {
+    background-color: #3949ab;
+}
+
+.anim {
+    animation: anim 0.8s;
+  }
+  
+@keyframes anim {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(0.7);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 
