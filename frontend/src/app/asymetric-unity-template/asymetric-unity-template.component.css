@@ -1,0 +1,49 @@
+@media screen and (max-width: 1200px) {
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        flex-direction: column;
+    }
+    
+    .button {
+        width: calc(20vh - 20px); /* Largeur égale à la hauteur pour faire un bouton carré */
+        height: calc(20vh - 20px); /* Hauteur égale à la largeur pour faire un bouton carré */
+        transform: translate(3vh);
+        background-color: #1a237e; /* Légèrement plus clair que le fond */
+        border: 10px solid #3949ab; /* Bordure */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 10px; /* Espacement entre les boutons */
+        font-size: 8vh;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+    }
+    
+    .button {
+        width: calc(20vw - 20px); /* Largeur égale à la hauteur pour faire un bouton carré */
+        height: calc(20vw - 20px); /* Hauteur égale à la largeur pour faire un bouton carré */
+        transform: translate(10vw, 0);
+        background-color: #1a237e; /* Légèrement plus clair que le fond */
+        border: 10px solid #3949ab; /* Bordure */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 10px; /* Espacement entre les boutons */
+        font-size: 8vw;
+    }
+}
+

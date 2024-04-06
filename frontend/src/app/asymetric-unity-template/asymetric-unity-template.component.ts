@@ -9,7 +9,6 @@ import { UrlService } from '../url.service';
 })
 export class AsymetricUnityTemplateComponent implements OnInit {
 
-  value: string | undefined;
   variable: string | undefined;
 
   constructor(private route: ActivatedRoute, private urlService: UrlService) {
@@ -21,12 +20,8 @@ export class AsymetricUnityTemplateComponent implements OnInit {
     });
   }
 
-  onInputChange(event: Event) {
-    // Accéder à la valeur du champ de texte à partir de l'événement
-    this.value = (event.target as HTMLInputElement).value;
-  }
 
-  click() {
-    this.urlService.publish(this.variable, this.value).subscribe((x)=>console.log)
+  click(value: string) {
+    this.urlService.publish(this.variable, value).subscribe((x)=>console.log)
   }
 }
