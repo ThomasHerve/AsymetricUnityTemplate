@@ -7,17 +7,17 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'false'
     nginx.ingress.kubernetes.io/use-regex: 'true'
   hosts:
-    - host: todo-core.multiplayertournamentonline.fr
+    - host: gdp2024-core.multiplayertournamentonline.fr
       path:  /()(.*)
       pathType: Prefix
       name: core
       port: 8000
-    - host: todo-frontend.multiplayertournamentonline.fr
+    - host: gdp2024.multiplayertournamentonline.fr
       path:  /()(.*)
       pathType: Prefix
       name: frontend
       port: 80
-    - host: todo-instance.multiplayertournamentonline.fr
+    - host: gdp2024-instance.multiplayertournamentonline.fr
       path:  /()(.*)
       pathType: Prefix
       name: instance-fixe
