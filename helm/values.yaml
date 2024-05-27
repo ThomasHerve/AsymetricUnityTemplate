@@ -36,6 +36,16 @@ frontend:
     targetCPUUtilizationPercentage: 80
     targetMemoryUtilizationPercentage: 80
 
+redis:
+  image: redis:7.2.5-alpine
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+      
 imagePullSecrets:
   name: thomashervecredentials
   dockerconfigjson: ""
