@@ -15,7 +15,7 @@ image:
     minReplicas: 1
     maxReplicas: 100
     targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 
 instance:
   repository: thomasherve/asymetric-unity-instance
@@ -34,7 +34,7 @@ frontend:
     minReplicas: 1
     maxReplicas: 100
     targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 
 imagePullSecrets:
   name: thomashervecredentials
