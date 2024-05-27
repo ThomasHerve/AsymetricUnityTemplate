@@ -1,4 +1,5 @@
-{{- if (ne .Values.image.replicaCount 0) }}
+{{- $value := .Values.image.replicaCount }}
+{{- if ne $value 0 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
