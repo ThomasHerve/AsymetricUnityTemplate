@@ -1,4 +1,4 @@
-{{- if ne .Values.image.replicaCount 0 }}
+{{- if (ne .Values.image.replicaCount 0) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
