@@ -41,10 +41,30 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.redis.port }}
       targetPort: http
       protocol: TCP
       name: http
   selector:
     app.kubernetes.io/instance: asyncunitytemplate
     app.kubernetes.io/name: instance-fixe
+{{- $value := int .Values.image.replicaCount }}
+{{- if ne $value 0 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: asyncunitytemplate
+    app.kubernetes.io/name: redis
+{{- end }}

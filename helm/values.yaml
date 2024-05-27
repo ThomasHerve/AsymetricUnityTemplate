@@ -38,6 +38,7 @@ frontend:
 
 redis:
   image: redis:7.2.5-alpine
+  port: 6379
   resources:
     limits:
       cpu: 200m
@@ -45,7 +46,7 @@ redis:
     requests:
       cpu: 100m
       memory: 100Mi
-      
+
 imagePullSecrets:
   name: thomashervecredentials
   dockerconfigjson: ""
