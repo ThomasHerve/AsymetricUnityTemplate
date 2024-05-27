@@ -2,6 +2,31 @@ import hug, os, random, string
 from kubernetes import client, config
 import qrcode
 from PIL import Image
+import redis
+import time
+import uuid
+
+class RedisLock:
+    def __init__(self, client, lock_key, lock_timeout=10):
+        self.client = client
+        self.lock_key = lock_key
+        self.lock_timeout = lock_timeout
+        self.lock_value = str(uuid.uuid4())
+
+    def acquire_lock(self):
+        while True:
+            if self.client.set(self.lock_key, self.lock_value, nx=True, ex=self.lock_timeout):
+                return True
+            time.sleep(0.1)
+
+    def release_lock(self):
+        if self.client.get(self.lock_key) == self.lock_value:
+            self.client.delete(self.lock_key)
+
+# Configuration de la connexion Redis
+redis_client = redis.StrictRedis(host=os.environ["REDIS_URL"], port=int(os.environ["REDIS_PORT"]), db=0)
+
+lock = RedisLock(redis_client, 'lock')
 
 @hug.post('/create-room')
 def create_room():
@@ -42,14 +67,19 @@ def create_room():
     v1.create_namespaced_service(namespace=namespace , body=service)
 
     # Update the ingress class
-    networking = client.NetworkingV1Api()
+    # Needs a general lock on the ressource
+    if lock.acquire_lock():
+        try:
+            networking = client.NetworkingV1Api()
 
-    current_ingress = networking.read_namespaced_ingress(name=ingress, namespace=namespace)
-    current_ingress_paths = current_ingress.spec.rules[0].http.paths
-    current_ingress_paths.append(client.V1HTTPIngressPath(path=f"/{pod_id}(/|$)(.*)", path_type="Prefix", backend=client.V1IngressBackend(service=client.V1IngressServiceBackend(name=f"instance-{pod_id}", port=client.V1ServiceBackendPort(number=port)))))
-    current_ingress.spec.rules[0].http.paths = current_ingress_paths
+            current_ingress = networking.read_namespaced_ingress(name=ingress, namespace=namespace)
+            current_ingress_paths = current_ingress.spec.rules[0].http.paths
+            current_ingress_paths.append(client.V1HTTPIngressPath(path=f"/{pod_id}(/|$)(.*)", path_type="Prefix", backend=client.V1IngressBackend(service=client.V1IngressServiceBackend(name=f"instance-{pod_id}", port=client.V1ServiceBackendPort(number=port)))))
+            current_ingress.spec.rules[0].http.paths = current_ingress_paths
 
-    networking.patch_namespaced_ingress(ingress, namespace, current_ingress)
+            networking.patch_namespaced_ingress(ingress, namespace, current_ingress)
+        finally:
+            lock.release_lock() 
 
     # QR code
     url = value=os.environ["BACKEND_URL"] + "/" + pod_id
@@ -62,17 +92,17 @@ def create_room():
     qr.add_data(url)
     qr.make(fit=True)
 
-    # Créer une image PIL à partir du QR code
+    # Create a PIL image PIL from the QR code
     img = qr.make_image(fill_color="black", back_color="white")
 
-    # Convertir l'image PIL en tableau de 0 et de 1
+    # convert the PIL image into an array
     qr_array = []
     width, height = img.size
     pixels = img.load()
     for y in range(height):
         row = []
         for x in range(width):
-            # Si le pixel est noir (représentant le code QR), ajouter 1, sinon 0
+            # 1: black, 0: white
             row.append(1 if pixels[x, y] == 0 else 0)
         qr_array.append(row)
 
