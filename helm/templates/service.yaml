@@ -41,7 +41,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.redis.port }}
+    - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
       name: http
@@ -58,9 +58,9 @@ metadata:
   labels:
     {{- include "helm.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.redis.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.redis.port }}
       targetPort: http
       protocol: TCP
       name: http
