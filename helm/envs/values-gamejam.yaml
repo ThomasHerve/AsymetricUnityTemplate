@@ -26,3 +26,6 @@ ingress:
     - secretName: ingress-cert
       hosts:
         - multiplayertournamentonline.fr
+
+instance:
+  enabled: true
