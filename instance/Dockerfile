@@ -9,6 +9,7 @@ COPY instance/app.py .
 
 # Installer les dépendances nécessaires
 RUN pip install websockets
+RUN pip install requests
 
 # Exposer le port 80 pour les connexions WebSocket
 EXPOSE 8000
