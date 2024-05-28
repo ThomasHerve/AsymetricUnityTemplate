@@ -42,9 +42,12 @@ def create_room():
     config.load_kube_config(config_file='./kubernetes-config')
     v1 = client.CoreV1Api()
 	
+    # Random key for host
+    host_key = ''.join(random.choice(string.ascii_lowercase) for i in range(10)) 
+
     # Create a pod
     containers = []
-    container1 = client.V1Container(name='instance', image=image, env=[client.V1EnvVar(name="INSTANCE_NAME", value=pod_id), client.V1EnvVar(name="BACKEND_URL", value=os.environ["BACKEND_URL"]), client.V1EnvVar(name="PASSWORD", value=os.environ["PASSWORD"])])
+    container1 = client.V1Container(name='instance', image=image, env=[client.V1EnvVar(name="INSTANCE_NAME", value=pod_id), client.V1EnvVar(name="BACKEND_URL", value=os.environ["BACKEND_URL"]), client.V1EnvVar(name="PASSWORD", value=os.environ["PASSWORD"]), client.V1EnvVar(name="HOST_KEY", value=host_key)])
     containers.append(container1)
 
     pod_spec = client.V1PodSpec(containers=containers)
@@ -106,7 +109,7 @@ def create_room():
             row.append(1 if pixels[x, y] == 0 else 0)
         qr_array.append(row)
 
-    return {"instance": pod_id, "qr_code": qr_array}
+    return {"instance": pod_id, "qr_code": qr_array, "host_key": host_key}
 
 @hug.post('/delete-room')
 def delete_room(body):
