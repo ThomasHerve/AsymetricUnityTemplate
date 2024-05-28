@@ -5,7 +5,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copier le script Python dans le répertoire de travail
-COPY app.py .
+COPY instance/app.py .
 
 # Installer les dépendances nécessaires
 RUN pip install websockets
