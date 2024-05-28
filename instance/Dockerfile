@@ -1,13 +1,17 @@
-FROM python:3.9
+# Utiliser une image de base Python officielle
+FROM python:3.9-slim
 
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier le script Python dans le répertoire de travail
+COPY app.py .
+
+# Installer les dépendances nécessaires
+RUN pip install websockets
+
+# Exposer le port 80 pour les connexions WebSocket
 EXPOSE 8000
 
-COPY ./instance/requirements.txt requirements.txt
-RUN pip3 install gunicorn
-RUN pip3 install -r requirements.txt
-WORKDIR /src
-
-RUN mkdir -p /src
-COPY ./instance/app/ /src
-
-CMD gunicorn --reload --bind=0.0.0.0:8000 __init__:__hug_wsgi__
+# Commande pour exécuter le script Python
+CMD ["python", "app.py"]

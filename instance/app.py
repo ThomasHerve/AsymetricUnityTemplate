@@ -1,0 +1,57 @@
+import os
+import asyncio
+import requests
+import websockets
+
+# Lire la valeur de la variable d'environnement "HOST_KEY"
+host_key = os.getenv("HOST_KEY")
+print(host_key)
+
+clients = set()
+server = None
+
+async def handler(websocket, path):
+    global server
+    clients.add(websocket)
+    try:
+        async for message in websocket:
+            print("message reçu: " + message)
+            if message == host_key:
+                if server is None:
+                    server = websocket
+                    print("found")
+                    await websocket.send("Vous êtes maintenant le serveur.")
+                else:
+                    await websocket.send("Il y a déjà un serveur.")
+            else:
+                if websocket == server and len(clients) > 1:
+                    try:
+                        await asyncio.wait([client.send(message) for client in clients if client != server])
+                    finally:
+                        pass
+                else:
+                    if server is not None:
+                        await server.send(message)
+    except websockets.exceptions.ConnectionClosedError as e:
+        print(f"Connexion fermée avec l'erreur : {e}")
+    except Exception as e:
+        print(f"Erreur inattendue : {e}")
+    finally:
+        clients.remove(websocket)
+        if websocket == server:
+            server = None
+
+async def main():
+    async with websockets.serve(handler, "0.0.0.0", 8000):
+        await asyncio.Future()  # run forever
+
+
+def stop():
+    instance_name = os.environ["INSTANCE_NAME"]
+    backend_url = os.environ["BACKEND_URL"]
+    password = os.environ["PASSWORD"]
+    requests.post(f"https://{backend_url}/delete-room", data={"instance": instance_name, "password": password})
+    return "deleted"
+
+if __name__ == "__main__":
+    asyncio.run(main())
