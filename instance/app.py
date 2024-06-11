@@ -52,7 +52,7 @@ def stop():
     instance_name = os.environ["INSTANCE_NAME"]
     backend_url = os.environ["BACKEND_URL"]
     password = os.environ["PASSWORD"]
-    requests.post(f"https://{backend_url}/delete-room", data={"instance": instance_name, "password": password})
+    requests.post(f"https://{backend_url}/delete-room", data={"instance": instance_name, "password": password}, verify=False)
     return "deleted"
 
 if __name__ == "__main__":
