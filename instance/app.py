@@ -40,6 +40,8 @@ async def handler(websocket, path):
         clients.remove(websocket)
         if websocket == server:
             server = None
+        if len(clients) == 0:
+            stop()
 
 async def main():
     async with websockets.serve(handler, "0.0.0.0", 8000):
